@@ -1,16 +1,16 @@
 $( document ).ready(function () {
   var thermostat = new Thermostat();
-console.log('hello1');
- $("#submit").click(function(e) {
-   e.preventDefault();
-   var city = $("#city").val();
-   $.getJSON('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=metric&APPID=121a9ab6b7bae94bcb61113c310c6e21', function (data){
-   $(".city_name").text("Current weather in " + data.name);
-   $(".result").text(data.weather[0].description);
-   $(".temp").text(data.main.temp);
-   console.log(data);
- });
- });
+  console.log('hello1');
+  $("#submit").click(function(e) {
+    e.preventDefault();
+    var city = $("#city").val();
+    $.getJSON('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=metric&APPID=121a9ab6b7bae94bcb61113c310c6e21', function (data){
+      $(".city_name").text("Current weather in " + data.name);
+      $(".result").text(data.weather[0].description);
+      $(".temp").text(data.main.temp);
+      console.log(data);
+    });
+  });
 
   updateTemperature();
   $('.toggle').toggles({
@@ -33,7 +33,11 @@ console.log('hello1');
   $('#up').click(function() {
     thermostat.up();
     updateTemperature();
+    $.postJSON('http://localhost:4567/', function (){
+      $("#temperature").text();
+      $('.city_name').text();
     });
+  });
 
   $('#down').click(function () {
     thermostat.down();
@@ -50,6 +54,10 @@ console.log('hello1');
   });
 
   function updateTemperature(){
+    $.getJSON('http://localhost:4567/', function (data){
+       $("#temperature").text(data.temperature);
+      console.log(data);
+    });
     $('#temperature').text(thermostat.temperature);
     $('#temperature').attr('class', thermostat.usage());
   }
