@@ -1,14 +1,16 @@
 $( document ).ready(function () {
   var thermostat = new Thermostat();
-console.log('hello');
-  $.getJSON('http://api.openweathermap.org/data/2.5/weather?q=London&APPID=121a9ab6b7bae94bcb61113c310c6e21', function (data){
-  $(".result").text(data.weather[0].description);
-  $(".temp").text(Math.round((data.main.temp-273.15)*10)/10);
-  console.log(data);
-  // // for (x in data.weather) {
-  // //   console.log(x);
-  // }
-});
+console.log('hello1');
+ $("#submit").click(function(e) {
+   e.preventDefault();
+   var city = $("#city").val();
+   $.getJSON('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=metric&APPID=121a9ab6b7bae94bcb61113c310c6e21', function (data){
+   $(".city_name").text("Current weather in " + data.name);
+   $(".result").text(data.weather[0].description);
+   $(".temp").text(data.main.temp);
+   console.log(data);
+ });
+ });
 
   updateTemperature();
   $('.toggle').toggles({
